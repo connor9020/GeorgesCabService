@@ -1,0 +1,14 @@
+# Production environment configuration
+cab-booking-service:
+  spring:
+    datasource:
+      url: jdbc:mysql://prod-db-server:3306/cab_booking_prod_db
+      username: prod_cab_user
+      password: prod_cab_password
+
+cab-fare-service:
+  spring:
+    datasource:
+      url: jdbc:mysql://prod-db-server:3306/cab_fare_prod_db
+      username: prod_fare_user
+      password: prod_fare_password

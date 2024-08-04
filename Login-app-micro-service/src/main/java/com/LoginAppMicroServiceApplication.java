@@ -26,7 +26,7 @@ public class LoginAppMicroServiceApplication {
 	@PostConstruct
 	public void init() {
 		//System.out.println("method called..");
-		Optional<Login> result = loginRepository.findById("admin@gmail.com");
+		Optional<Login> result = loginRepository.findByEmailid("admin@gmail.com");
 		if(result.isPresent()) {
 			System.err.println("Admin account aready present");
 		}else {
@@ -41,7 +41,7 @@ public class LoginAppMicroServiceApplication {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(LoginAppMicroServiceApplication.class, args);
-		System.err.println("login micro service up on port number 8181");
+		System.err.println("login micro service up on port number 8082");
 	}
 
 }

@@ -13,19 +13,24 @@ import com.eshopping.service.LoginService;
 
 @RestController
 @RequestMapping("login")
-@CrossOrigin			// allow to access my rest api for all url for all methods. 
+@CrossOrigin
 public class LoginController {
 
-	@Autowired
-	LoginService loginService;
-	
-	@PostMapping(value = "signin",consumes = MediaType.APPLICATION_JSON_VALUE)
-	public String signIn(@RequestBody Login login) {
-		return loginService.signIn(login);
-	}
-	
-	@PostMapping(value = "signup",consumes = MediaType.APPLICATION_JSON_VALUE)
-	public String signUp(@RequestBody Login login) {
-		return loginService.signUp(login);
-	}
+    @Autowired
+    private LoginService loginService;
+
+    @PostMapping(value = "signin", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String signIn(@RequestBody Login login) {
+        String message = loginService.signIn(login);
+        if ("Customer login successfully".equals(message) || "Admin login successfully".equals(message)) {
+            return "redirect:/home";
+        } else {
+            return message;
+        }
+    }
+
+    @PostMapping(value = "signup", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String signUp(@RequestBody Login login) {
+        return loginService.signUp(login);
+    }
 }

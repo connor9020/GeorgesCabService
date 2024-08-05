@@ -18,7 +18,7 @@ public class LoginServiceImpl implements LoginService {
     public String signUp(Login login) {
         if (loginRepository.findByEmailid(login.getEmailid()).isPresent()) {
             return "Emailid must be unique";
-        } else if (login.getTypeofuser().equals("admin")) {
+        } else if ("admin".equals(login.getTypeofuser())) {
             return "You can't create admin account";
         } else {
             loginRepository.save(login);
@@ -32,9 +32,9 @@ public class LoginServiceImpl implements LoginService {
         if (result.isPresent()) {
             Login ll = result.get();
             if (ll.getPassword().equals(login.getPassword())) {
-                if (ll.getTypeofuser().equals(login.getTypeofuser()) && ll.getTypeofuser().equals("admin")) {
+                if ("admin".equals(ll.getTypeofuser()) && "admin".equals(login.getTypeofuser())) {
                     return "Admin login successfully";
-                } else if (ll.getTypeofuser().equals("customer")) {
+                } else if ("customer".equals(ll.getTypeofuser()) && "customer".equals(login.getTypeofuser())) {
                     return "Customer login successfully";
                 } else {
                     return "Type of user is invalid";
@@ -47,3 +47,4 @@ public class LoginServiceImpl implements LoginService {
         }
     }
 }
+

@@ -8,12 +8,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class WebController {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @GetMapping("/login")
     public String showLoginForm(Model model) {
@@ -24,8 +28,12 @@ public class WebController {
     @PostMapping("/login")
     public String login(@ModelAttribute Login login, Model model) {
         String message = loginService.signIn(login);
-        model.addAttribute("message", message);
-        return "login";
+        if ("Customer login successfully".equals(message) || "Admin login successfully".equals(message)) {
+            return "redirect:/home";
+        } else {
+            model.addAttribute("message", message);
+            return "login";
+        }
     }
 
     @GetMapping("/register")
@@ -41,4 +49,20 @@ public class WebController {
         model.addAttribute("message", message);
         return "register";
     }
+
+    @GetMapping("/home")
+    public String showHomePage() {
+        return "home";
+    }
+
+    // Example methods to call cab-booking and cab-fare microservices
+//    private String callCabBookingService() {
+//        String url = "http://localhost:8083/cab-booking"; // Replace with your cab-booking service endpoint
+//        return restTemplate.getForObject(url, String.class);
+//    }
+//
+//    private String callCabFareService() {
+//        String url = "http://localhost:8084/cab-fare"; // Replace with your cab-fare service endpoint
+//        return restTemplate.getForObject(url, String.class);
+//    }
 }

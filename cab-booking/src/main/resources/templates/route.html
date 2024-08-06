@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Route</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        #map { height: 600px; }
+    </style>
+</head>
+<body>
+    <h1>George's Cab Service - Route</h1>
+    <div id="map"></div>
+    <p>Total Distance: <span id="totalDistance"></span> km</p>
+    <script th:inline="javascript">
+        var startLat = /*[[${startLat}]]*/ 0;
+        var startLng = /*[[${startLng}]]*/ 0;
+        var endLat = /*[[${endLat}]]*/ 0;
+        var endLng = /*[[${endLng}]]*/ 0;
+        var routeData = /*[[${routeData}]]*/ '{}';
+
+        var map = L.map('map').setView([startLat, startLng], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        var coords = JSON.parse(routeData).features[0].geometry.coordinates;
+        var latlngs = coords.map(coord => coord.reverse());
+        L.polyline(latlngs, { color: 'blue' }).addTo(map);
+        map.fitBounds(latlngs);
+
+        // Add start and end markers
+        L.marker([startLat, startLng]).addTo(map).bindPopup("Start").openPopup();
+        L.marker([endLat, endLng]).addTo(map).bindPopup("End").openPopup();
+
+        // Calculate total distance
+        var totalDistance = JSON.parse(routeData).features[0].properties.segments[0].distance / 1000; // Convert to km
+        document.getElementById("totalDistance").textContent = totalDistance.toFixed(2);
+    </script>
+</body>
+</html>
+
+
+

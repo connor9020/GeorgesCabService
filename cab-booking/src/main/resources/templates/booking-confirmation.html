@@ -1,16 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Booking Confirmation - George's Cab Service</title>
+    <title>Booking Confirmation</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        #map { height: 400px; }
+    </style>
 </head>
 <body>
-    <h1>Booking Confirmation</h1>
-    <p>Your booking has been confirmed!</p>
-    <p>Booking Details:</p>
-    <p>Customer Name: <span th:text="${booking.customerName}"></span></p>
-    <p>Cab Type: <span th:text="${booking.cabType}"></span></p>
-    <p>Pickup Location: <span th:text="${booking.pickupLocation}"></span></p>
-    <p>Drop Location: <span th:text="${booking.dropLocation}"></span></p>
-    <p><a th:href="@{/home}">Back to Home</a></p>
+    <h1>George's Cab Service - Booking Confirmation</h1>
+    <div id="map"></div>
+    <p>Total Distance: <span th:text="${totalDistance}"></span> km</p>
+    <p>Fare: $<span th:text="${fare}"></span></p>
+    <form th:action="@{/confirm-booking}" method="post">
+        <input type="hidden" name="startLat" th:value="${startLat}">
+        <input type="hidden" name="startLng" th:value="${startLng}">
+        <input type="hidden" name="endLat" th:value="${endLat}">
+        <input type="hidden" name="endLng" th:value="${endLng}">
+        <input type="hidden" name="totalDistance" th:value="${totalDistance}">
+        <input type="hidden" name="fare" th:value="${fare}">
+        <button type="submit">Confirm Booking</button>
+    </form>
+    <script th:inline="javascript">
+	    var startLat = /*[[${startLat}]]*/ 0;
+	    var startLng = /*[[${startLng}]]*/ 0;
+	    var endLat = /*[[${endLat}]]*/ 0;
+	    var endLng = /*[[${endLng}]]*/ 0;
+	    var routeData = /*[[${routeData}]]*/ '{}';
+
+
+        var map = L.map('map').setView([startLat, startLng], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        var coords = JSON.parse(routeData).features[0].geometry.coordinates;
+        var latlngs = coords.map(coord => coord.reverse());
+        L.polyline(latlngs, { color: 'blue' }).addTo(map);
+        map.fitBounds(latlngs);
+
+        // Add markers for start and end points
+        L.marker([startLat, startLng]).addTo(map).bindPopup("Start Point").openPopup();
+        L.marker([endLat, endLng]).addTo(map).bindPopup("End Point").openPopup();
+    </script>
 </body>
 </html>

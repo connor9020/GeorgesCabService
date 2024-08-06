@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Column;
 
 @Entity
 public class Booking {
@@ -16,9 +15,14 @@ public class Booking {
     private String cabType;
     private String pickupLocation;
     private String dropLocation;
-
-    @Column(name = "cid")
     private Long cid;
+
+    private double startLat;
+    private double startLng;
+    private double endLat;
+    private double endLng;
+    private double distance;
+    private double fare;
 
     // Getters and Setters
     public Long getId() {
@@ -67,5 +71,53 @@ public class Booking {
 
     public void setCid(Long cid) {
         this.cid = cid;
+    }
+
+    public double getStartLat() {
+        return startLat;
+    }
+
+    public void setStartLat(double startLat) {
+        this.startLat = startLat;
+    }
+
+    public double getStartLng() {
+        return startLng;
+    }
+
+    public void setStartLng(double startLng) {
+        this.startLng = startLng;
+    }
+
+    public double getEndLat() {
+        return endLat;
+    }
+
+    public void setEndLat(double endLat) {
+        this.endLat = endLat;
+    }
+
+    public double getEndLng() {
+        return endLng;
+    }
+
+    public void setEndLng(double endLng) {
+        this.endLng = endLng;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public double getFare() {
+        return fare;
+    }
+
+    public void setFare(double fare) {
+        this.fare = fare;
     }
 }

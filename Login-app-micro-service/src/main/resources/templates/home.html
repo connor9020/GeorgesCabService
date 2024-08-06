@@ -7,6 +7,8 @@
     <h1>Welcome to George's Cab Service</h1>
     <p>You have successfully logged in!</p>
     <p>Here, you can book cabs, view your bookings, and manage your account.</p>
-    <p><a th:href="@{/logout}">Logout</a></p>
+    <button onclick="window.location.href='http://localhost:8081/bookings/book-cab'">Book a Cab</button>
+    <button onclick="window.location.href='http://localhost:8081/bookings/past-rides'">See Past Rides</button>
+    <button onclick="window.location.href='/logout'">Logout</button>
 </body>
 </html>

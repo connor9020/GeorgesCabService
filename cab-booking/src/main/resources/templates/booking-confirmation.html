@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Booking Confirmation - George's Cab Service</title>
+</head>
+<body>
+    <h1>Booking Confirmation</h1>
+    <p>Your booking has been confirmed!</p>
+    <p>Booking Details:</p>
+    <p>Customer Name: <span th:text="${booking.customerName}"></span></p>
+    <p>Cab Type: <span th:text="${booking.cabType}"></span></p>
+    <p>Pickup Location: <span th:text="${booking.pickupLocation}"></span></p>
+    <p>Drop Location: <span th:text="${booking.dropLocation}"></span></p>
+    <p><a th:href="@{/home}">Back to Home</a></p>
+</body>
+</html>

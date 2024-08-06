@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Book a Cab - George's Cab Service</title>
+</head>
+<body>
+    <h1>Book a Cab</h1>
+    <form th:action="@{/bookings/book-cab}" th:object="${booking}" method="post">
+        <label for="customerName">Customer Name:</label>
+        <input type="text" id="customerName" th:field="*{customerName}" /><br/>
+        
+        <label for="cabType">Cab Type:</label>
+        <input type="text" id="cabType" th:field="*{cabType}" /><br/>
+        
+        <label for="pickupLocation">Pickup Location:</label>
+        <input type="text" id="pickupLocation" th:field="*{pickupLocation}" /><br/>
+        
+        <label for="dropLocation">Drop Location:</label>
+        <input type="text" id="dropLocation" th:field="*{dropLocation}" /><br/>
+        
+        <button type="submit">Book Cab</button>
+    </form>
+    <p><a th:href="@{/home}">Back to Home</a></p>
+</body>
+</html>

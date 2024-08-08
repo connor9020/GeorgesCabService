@@ -5,10 +5,10 @@
 </head>
 <body>
     <h1>Welcome to George's Cab Service</h1>
-    <p>You have successfully logged in!</p>
+    <p>You have successfully logged in, <span th:text="${name}">User</span>!</p>
     <p>Here, you can book cabs, view your bookings, and manage your account.</p>
     <button onclick="location.href='http://localhost:8081/map'">Book a Cab</button>
     <button onclick="location.href='/past-rides'">See Past Rides</button>
-    <button onclick="location.href='/logout'">Logout</button>
+    <button onclick="location.href='http://localhost:8082/login'">Logout</button>
 </body>
 </html>

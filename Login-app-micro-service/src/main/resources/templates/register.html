@@ -6,6 +6,10 @@
 <body>
     <h2>Register</h2>
     <form th:action="@{/register}" method="post">
+    	<div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name"/>
+        </div>
         <div>
             <label for="emailid">Email:</label>
             <input type="text" id="emailid" name="emailid"/>

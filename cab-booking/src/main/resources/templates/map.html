@@ -21,12 +21,47 @@
         <label for="endLng">End Longitude:</label>
         <input type="text" id="endLng" name="endLng" required>
         <button type="submit">Calculate Route</button>
+        <button type="button" id="clearPoints">Clear Points</button>
     </form>
+    <button onclick="window.location.href='http://localhost:8082/home'">Back to Home</button>
     <script>
         var map = L.map('map').setView([37.7749, -122.4194], 13); // Default center of the map
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
+
+        var startMarker, endMarker;
+
+        // Add click event listener to the map
+        map.on('click', function(e) {
+            if (!startMarker) {
+                startMarker = L.marker(e.latlng).addTo(map);
+                document.getElementById('startLat').value = e.latlng.lat;
+                document.getElementById('startLng').value = e.latlng.lng;
+            } else if (!endMarker) {
+                endMarker = L.marker(e.latlng).addTo(map);
+                document.getElementById('endLat').value = e.latlng.lat;
+                document.getElementById('endLng').value = e.latlng.lng;
+            } else {
+                alert('You have already selected both start and end points.');
+            }
+        });
+
+        // Clear points and markers
+        document.getElementById('clearPoints').addEventListener('click', function() {
+            if (startMarker) {
+                map.removeLayer(startMarker);
+                startMarker = null;
+            }
+            if (endMarker) {
+                map.removeLayer(endMarker);
+                endMarker = null;
+            }
+            document.getElementById('startLat').value = '';
+            document.getElementById('startLng').value = '';
+            document.getElementById('endLat').value = '';
+            document.getElementById('endLng').value = '';
+        });
     </script>
 </body>
 </html>

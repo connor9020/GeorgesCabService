@@ -11,17 +11,27 @@ public class Login {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cid;
-
+    private String name;
     private String emailid;
     private String password;
     private String typeofuser;
 
     // Getters and Setters
+    
+    
     public Long getCid() {
         return cid;
     }
 
-    public void setCid(Long cid) {
+    public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setCid(Long cid) {
         this.cid = cid;
     }
 

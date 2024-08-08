@@ -12,12 +12,22 @@
     <h1>George's Cab Service - Route</h1>
     <div id="map"></div>
     <p>Total Distance: <span id="totalDistance"></span> km</p>
+    <form>
+        <label for="cabType">Select Cab Type:</label>
+        <select id="cabType" name="cabType">
+            <!-- Options will be dynamically populated -->
+        </select>
+        <p>Fare: $<span id="fare"></span></p>
+        <button type="button" onclick="confirmBooking()">Confirm Booking</button>
+    </form>
+    <button onclick="location.href='/map'">Go Back to Map</button>
     <script th:inline="javascript">
         var startLat = /*[[${startLat}]]*/ 0;
         var startLng = /*[[${startLng}]]*/ 0;
         var endLat = /*[[${endLat}]]*/ 0;
         var endLng = /*[[${endLng}]]*/ 0;
         var routeData = /*[[${routeData}]]*/ '{}';
+        var fares = /*[[${fares}]]*/ '[]'; // Assuming it's passed as a JSON string
 
         var map = L.map('map').setView([startLat, startLng], 13);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -36,9 +46,30 @@
         // Calculate total distance
         var totalDistance = JSON.parse(routeData).features[0].properties.segments[0].distance / 1000; // Convert to km
         document.getElementById("totalDistance").textContent = totalDistance.toFixed(2);
+
+        // Populate cab types
+        var fareData = JSON.parse(fares);
+        var cabTypeSelect = document.getElementById('cabType');
+        fareData.forEach(function(fare) {
+            var option = document.createElement('option');
+            option.value = fare.rate;
+            option.text = fare.cabType;
+            cabTypeSelect.appendChild(option);
+        });
+
+        // Update fare when cab type changes
+        cabTypeSelect.addEventListener('change', function() {
+            var selectedRate = parseFloat(cabTypeSelect.value);
+            var fare = totalDistance * selectedRate;
+            document.getElementById('fare').textContent = fare.toFixed(2);
+        });
+
+        // Trigger change event to calculate initial fare
+        cabTypeSelect.dispatchEvent(new Event('change'));
+        function confirmBooking() {
+            // Logic to confirm booking goes here
+            alert('Booking confirmed!');
+        }
     </script>
 </body>
 </html>
-
-
-

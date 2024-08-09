@@ -24,14 +24,15 @@ public class LoginController {
 
     @PostMapping(value = "signin", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ModelAndView signIn(@RequestBody Login login, HttpSession session) {
-        String message = loginService.signIn(login);
+        Login loggedInUser = loginService.signIn(login);
         ModelAndView mav = new ModelAndView();
-        if ("Customer login successfully".equals(message) || "Admin login successfully".equals(message)) {
-            session.setAttribute("name", login.getName());
+        if (loggedInUser != null) {
+            session.setAttribute("name", loggedInUser.getName());
             mav.setViewName("home");
+            mav.addObject("name", loggedInUser.getName());
         } else {
             mav.setViewName("login");  // Redirect to login page if authentication fails
-            mav.addObject("message", message);
+            mav.addObject("message", "Invalid email or password");
         }
         return mav;
     }

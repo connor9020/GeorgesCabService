@@ -25,26 +25,20 @@ public class LoginServiceImpl implements LoginService {
             return "Account created successfully";
         }
     }
-
     @Override
-    public String signIn(Login login) {
+    public Login signIn(Login login) {
         Optional<Login> result = loginRepository.findByEmailid(login.getEmailid());
         if (result.isPresent()) {
             Login ll = result.get();
             if (ll.getPassword().equals(login.getPassword())) {
-                if ("admin".equals(ll.getTypeofuser()) && "admin".equals(login.getTypeofuser())) {
-                    return "Admin login successfully";
-                } else if ("customer".equals(ll.getTypeofuser()) && "customer".equals(login.getTypeofuser())) {
-                    return "Customer login successfully";
-                } else {
-                    return "Type of user is invalid";
-                }
+                return ll;  // Return the Login object with user details
             } else {
-                return "Password is wrong";
+                return null;  // Password is incorrect
             }
         } else {
-            return "Emailid is wrong";
+            return null;  // Email ID is incorrect
         }
     }
+
 }
 

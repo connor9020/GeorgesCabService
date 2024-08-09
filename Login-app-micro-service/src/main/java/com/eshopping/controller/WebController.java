@@ -8,16 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class WebController {
 
     @Autowired
     private LoginService loginService;
-
-    @Autowired
-    private RestTemplate restTemplate;
 
     @GetMapping("/login")
     public String showLoginForm(Model model) {
@@ -27,11 +23,12 @@ public class WebController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute Login login, Model model) {
-        String message = loginService.signIn(login);
-        if ("Customer login successfully".equals(message) || "Admin login successfully".equals(message)) {
-            return "redirect:/home";
+        Login loggedInUser = loginService.signIn(login);
+        if (loggedInUser != null) {
+            model.addAttribute("name", loggedInUser.getName());
+            return "home";
         } else {
-            model.addAttribute("message", message);
+            model.addAttribute("message", "Invalid credentials");
             return "login";
         }
     }
@@ -51,18 +48,9 @@ public class WebController {
     }
 
     @GetMapping("/home")
-    public String showHomePage() {
+    public String showHomePage(Model model) {
+        // Add any logic you need to prepare data for the home page.
         return "home";
     }
-
-    // Example methods to call cab-booking and cab-fare microservices
-//    private String callCabBookingService() {
-//        String url = "http://localhost:8083/cab-booking"; // Replace with your cab-booking service endpoint
-//        return restTemplate.getForObject(url, String.class);
-//    }
-//
-//    private String callCabFareService() {
-//        String url = "http://localhost:8084/cab-fare"; // Replace with your cab-fare service endpoint
-//        return restTemplate.getForObject(url, String.class);
-//    }
 }
+

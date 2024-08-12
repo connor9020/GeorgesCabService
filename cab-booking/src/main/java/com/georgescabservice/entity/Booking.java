@@ -11,12 +11,8 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String customerName;
+    private Long cid;  // Customer ID or reference
     private String cabType;
-    private String pickupLocation;
-    private String dropLocation;
-    private Long cid;
-
     private double startLat;
     private double startLng;
     private double endLat;
@@ -33,12 +29,12 @@ public class Booking {
         this.id = id;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public Long getCid() {
+        return cid;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCid(Long cid) {
+        this.cid = cid;
     }
 
     public String getCabType() {
@@ -47,30 +43,6 @@ public class Booking {
 
     public void setCabType(String cabType) {
         this.cabType = cabType;
-    }
-
-    public String getPickupLocation() {
-        return pickupLocation;
-    }
-
-    public void setPickupLocation(String pickupLocation) {
-        this.pickupLocation = pickupLocation;
-    }
-
-    public String getDropLocation() {
-        return dropLocation;
-    }
-
-    public void setDropLocation(String dropLocation) {
-        this.dropLocation = dropLocation;
-    }
-
-    public Long getCid() {
-        return cid;
-    }
-
-    public void setCid(Long cid) {
-        this.cid = cid;
     }
 
     public double getStartLat() {

@@ -1,7 +1,11 @@
 package com.eshopping.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,23 +26,21 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    @PostMapping(value = "signin", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ModelAndView signIn(@RequestBody Login login, HttpSession session) {
+    @PostMapping(value = "signin", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public ResponseEntity<?> signIn(@RequestBody Login login, HttpSession session) {
         Login loggedInUser = loginService.signIn(login);
-        ModelAndView mav = new ModelAndView();
         if (loggedInUser != null) {
             session.setAttribute("name", loggedInUser.getName());
-            mav.setViewName("home");
-            mav.addObject("name", loggedInUser.getName());
+            return ResponseEntity.ok(Map.of("message", "Login successful", "name", loggedInUser.getName()));
         } else {
-            mav.setViewName("login");  // Redirect to login page if authentication fails
-            mav.addObject("message", "Invalid email or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Invalid email or password"));
         }
-        return mav;
     }
 
+
     @PostMapping(value = "signup", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String signUp(@RequestBody Login login) {
-        return loginService.signUp(login);
+    public ResponseEntity<String> signUp(@RequestBody Login login) {
+        String signUpResponse = loginService.signUp(login);
+        return ResponseEntity.ok(signUpResponse);
     }
 }
